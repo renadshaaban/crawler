@@ -4,7 +4,7 @@ class Product < ApplicationRecord
       {
         results: "ok" ,
         products: Product.all.map{|e| 
-          { product_id:e.id , name:name , photo:e.photo ,link: e.link,
+          { product_id:e.id , name:name , 
             price: e.price
           }}
       }

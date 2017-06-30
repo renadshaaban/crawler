@@ -19,6 +19,6 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every :day , :at => "1:35pm" do
+every 1.day do
   rake "product_test:fetch_prices"                 
 end

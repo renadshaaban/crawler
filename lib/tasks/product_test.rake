@@ -12,7 +12,6 @@ namespace :product_test do
 		#link = item.at_css(".heading-b div")[:href]
 		#puts name
 		#puts price
-		puts "hopa"
 		@p=Product.new(:name => name, :price => price)
 		@p.save!
 	end
