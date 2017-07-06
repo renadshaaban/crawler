@@ -26,8 +26,8 @@ namespace :product_test do
       href=li.css("a[href]")
       img=li.css("img")
       if href.text.downcase.include? "batman"
-        img_array.push(img.attr('src'))
-        li_array.push(li)
+        #img_array.push(img.attr('src'))
+        #li_array.push(li)
         @p.image=img.attr('src')
         href.text.split("\n").each do |name|
           if name.downcase.include? "batman"
