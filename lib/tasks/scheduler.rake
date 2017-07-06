@@ -1,32 +1,43 @@
-=begin
-desc "This task is called by the Heroku scheduler add-on"
-task :update_feed => :environment do
-  puts "Updating feed..."
-  NewsFeed.update
-  puts "done."
-end
-
-task :send_reminders => :environment do
-  User.send_reminders
-end
-=end
-
 namespace :product_test do
   desc "Fetch All Products"
   task :fetch_products => :environment do
   	require 'nokogiri'
   	require 'open-uri'
   	Product.delete_all
+
+    #Walmart
   	url = "https://www.walmart.com/search/?query=batman"
-	doc = Nokogiri::HTML(open(url))
-	doc.css(".u-size-1-5-xl").each do |item|
-		name = item.at_css(".heading-b div").text
-		price = item.at_css(".search-result-productprice").text[/[0-9\.]+/]
-		#link = item.at_css(".heading-b div")[:href]
-		#puts name
-		#puts price
-		@p=Product.new(:name => name, :price => price)
-		@p.save!
-	end
+    page = Nokogiri::HTML(open(url))
+
+    #Amazon
+    #url = "https://www.amazon.com/s?url=search-alias%3Daps&field-keywords=batman"
+    #page = Nokogiri::HTML(open(url,
+    #"User-Agent" => "Ruby/#{RUBY_VERSION}",
+    #"From" => "renad.shaaban@gmail.com"
+    #))
+
+    li_all=page.css('li')
+    names_array=[]
+    li_array=[]
+    img_array=[]
+
+    li_all.each do |li|
+      @p=Product.new
+      href=li.css("a[href]")
+      img=li.css("img")
+      if href.text.downcase.include? "batman"
+        img_array.push(img.attr('src'))
+        li_array.push(li)
+        @p.image=img.attr('src')
+        href.text.split("\n").each do |name|
+          if name.downcase.include? "batman"
+            names_array.push(name)
+            puts name
+            @p.name=name
+          end
+        end
+      end
+      @p.save
+    end
   end
 end
