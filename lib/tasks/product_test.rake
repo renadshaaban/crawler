@@ -22,21 +22,28 @@ namespace :product_test do
 	img_array=[]
 
 	li_all.each do |li|
-		@p=Product.new
 		href=li.css("a[href]")
 		img=li.css("img")
+		@p=Product.new
+		prod_img=""
+		prod_name=""
 		if href.text.downcase.include? "batman"
 			img_array.push(img.attr('src'))
 			li_array.push(li)
-			@p.image=img.attr('src')
+			prod_img = img.attr('src')
+			
 			href.text.split("\n").each do |name|
 				if name.downcase.include? "batman"
 					names_array.push(name)
-					@p.name=name
+					prod_name=name
 				end
 			end
 		end
-		@p.save
+		if prod_img.size > 0 && prod_name.size >0
+			@p.name=prod_name
+			@p.image= prod_img
+			@p.save
+		end
 	end
 
   end
